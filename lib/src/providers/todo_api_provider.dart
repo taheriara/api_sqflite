@@ -7,11 +7,8 @@ class TodoApiProvider {
     var url = "https://jsonplaceholder.typicode.com/todos";
     Response response = await Dio().get(url);
 
-    print('api ----: ${response.toString()}');
-
-    return todoFromJson(response.data).map((employee) {
-      print('Inserting $employee');
-      //DBProvider.db.createEmployee(employee);
+    return (response.data as List).map((employee) {
+      DBProvider.db.createEmployee(Todo.fromJson(employee));
     }).toList();
   }
 }

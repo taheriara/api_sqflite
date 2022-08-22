@@ -23,13 +23,14 @@ class Todo {
         id: json["id"],
         userId: json["userId"],
         title: json["title"],
-        completed: json["completed"],
+        completed: json["completed"] == 1 ? true : false,
+        //completed: json["completed"] == 1 ? true : false,
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "email": userId,
-        "firstName": title,
-        "lastName": completed,
+        "userId": userId,
+        "title": title,
+        "completed": completed,
       };
 }

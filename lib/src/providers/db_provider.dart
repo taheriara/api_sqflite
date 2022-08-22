@@ -29,18 +29,16 @@ class DBProvider {
           'id INTEGER PRIMARY KEY,'
           'userId INTEGER NOT NULL,'
           'title TEXT,'
-          'completed BOOLEAN NOT NULL'
+          'completed INTEGER NOT NULL'
           ')');
     });
   }
 
   // Insert employee on database
   createEmployee(Todo newItem) async {
-    print('insert-1');
     await deleteAllEmployees();
     final db = await database;
     final res = await db.insert('todo', newItem.toJson());
-    print('insert-2');
     return res;
   }
 
@@ -48,14 +46,14 @@ class DBProvider {
   Future<int> deleteAllEmployees() async {
     final db = await database;
     final res = await db.rawDelete('DELETE FROM todo');
-
     return res;
   }
 
   Future<List<Todo>> getAllEmployees() async {
+    await Future.delayed(const Duration(seconds: 1));
     final db = await database;
-    final res = await db.rawQuery("SELECT * FROM todo");
-
+    //final res = await db.rawQuery("SELECT * FROM todo");
+    final res = await db.query('todo');
     List<Todo> list =
         res.isNotEmpty ? res.map((c) => Todo.fromJson(c)).toList() : [];
 
