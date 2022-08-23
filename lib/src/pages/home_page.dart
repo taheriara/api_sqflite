@@ -30,6 +30,12 @@ class _HomePageState extends State<HomePage> {
               await _deleteData();
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.remove_circle),
+            onPressed: () async {
+              await _deleteDb();
+            },
+          ),
         ],
       ),
       body: isLoading
@@ -40,11 +46,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  _deleteDb() async {
+    await DBProvider.db.deleteDb();
+  }
+
   _loadFromApi() async {
     setState(() {
       isLoading = true;
     });
-
+    //DBProvider.db.getAllEmployees();
     var apiProvider = TodoApiProvider();
     await apiProvider.getAllEmployees();
 
@@ -94,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                   style: const TextStyle(fontSize: 20.0),
                 ),
                 title: Text(
-                    "id: ${snapshot.data[index].id.toString()} - ${snapshot.data[index].userId.toString()} "),
+                    "id: ${snapshot.data[index].id.toString()} - ${snapshot.data[index].userId.toString()}:: ${snapshot.data[index].completed} "),
                 subtitle: Text('title: ${snapshot.data[index].title}'),
               );
             },

@@ -8,21 +8,7 @@ class TodoApiProvider {
     Response response = await Dio().get(url);
 
     return (response.data as List).map((employee) {
-      DBProvider.db.createEmployee(Todo.fromJson(employee));
+      DBProvider.db.createEmployee(Todo.fromJsonApi(employee));
     }).toList();
   }
 }
-
-//https://stackoverflow.com/questions/59434571/how-to-store-api-json-data-into-sqflite-in-flutter
-//using: 
-// return employeeFromJson(response.data).map((employee) {
-//   print('Inserting $employee');
-//   DBProvider.db.createEmployee(employee);
-// }).toList();
-
-// instead of
-
-// return (response.data as List).map((employee) {
-//   print('Inserting $employee');
-//   DBProvider.db.createEmployee(Employee.fromJson(employee));
-// }).toList();
