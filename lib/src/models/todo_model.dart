@@ -19,6 +19,7 @@ class Todo {
     required this.completed,
   });
 
+//for get from db and then show
   static Todo fromJson(Map<String, dynamic> json) => Todo(
         id: json["id"],
         userId: json["userId"],
@@ -26,6 +27,7 @@ class Todo {
         completed: json["completed"] != 0 ? true : false,
       );
 
+//for first time when get api and save to db then getAll to show.
   factory Todo.fromJsonApi(Map<String, dynamic> json) => Todo(
         id: json["id"],
         userId: json["userId"],

@@ -4,22 +4,20 @@ import 'package:sqflite/sqflite.dart';
 
 class DBProvider {
   static Database? _database;
-  static final DBProvider db = DBProvider._();
+  static final DBProvider db = DBProvider._init();
 
   final String tbName = 'todo2';
 
-  DBProvider._();
+  DBProvider._init();
 
   Future<Database> get database async {
     // If database exists, return database
     if (_database != null) {
-      print('db is exists');
       return _database!;
     }
 
     // If database don't exists, create one
     _database = await initDB();
-    print('db is NOT exists');
     return _database!;
   }
 
@@ -39,22 +37,18 @@ class DBProvider {
     });
   }
 
-// delete db
+  // Delete the database
   Future<void> deleteDb() async {
-    // Get a location using getDatabasesPath
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'db_todo.db');
-
-// Delete the database
     await deleteDatabase(path);
   }
 
   // Insert employee on database
   createEmployee(Todo newItem) async {
-    //await deleteAllEmployees();
+    await deleteAllEmployees();
     final db = await database;
     final res = await db.insert(tbName, newItem.toJson());
-    print('insert $res');
     return res;
   }
 
@@ -66,20 +60,10 @@ class DBProvider {
   }
 
   Future<List<Todo>> getAllEmployees() async {
-    print('START==HTA');
     await Future.delayed(const Duration(seconds: 1));
     final db = await database;
-    //final res = await db.rawQuery("SELECT * FROM todo");
-    final res = await db.query(tbName);
-    print('res length:.: ${res.length}');
+    final res = await db
+        .query(tbName); //final res = await db.rawQuery("SELECT * FROM todo");
     return res.map((json) => Todo.fromJson(json)).toList();
-    // print(res[3]);
-    List<Todo> list =
-        res.isNotEmpty ? res.map((c) => Todo.fromJson(c)).toList() : [];
-
-    //print(list[3].completed);
-
-    print('list count: ${list.length.toString()}');
-    return list;
   }
 }
