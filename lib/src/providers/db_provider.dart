@@ -1,3 +1,4 @@
+import 'package:api_sqflite/src/models/question_model.dart';
 import 'package:api_sqflite/src/models/todo_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -34,6 +35,15 @@ class DBProvider {
           'title TEXT,'
           'completed INTEGER NOT NULL'
           ')');
+
+      await db.execute('''
+          CREATE TABLE faq(
+          faqid INTEGER PRIMARY KEY,
+          question TEXT NOT NULL,
+          answer TEXT NOT NULL,
+          creationTime TEXT
+          )
+          ''');
     });
   }
 
@@ -52,6 +62,14 @@ class DBProvider {
     return res;
   }
 
+  // Insert employee on database*****
+  createQuestion(QuestionModel newItem) async {
+    //await deleteAllEmployees();
+    final db = await database;
+    final res = await db.insert('faq', newItem.toJson());
+    return res;
+  }
+
   // Delete all employees
   Future<int> deleteAllEmployees() async {
     final db = await database;
@@ -59,11 +77,28 @@ class DBProvider {
     return res;
   }
 
+  // Delete all employees***
+  Future<int> deleteAllQuestions() async {
+    final db = await database;
+    final res = await db.rawDelete('DELETE FROM faq');
+    return res;
+  }
+
   Future<List<Todo>> getAllEmployees() async {
-    await Future.delayed(const Duration(seconds: 1));
+    //+++++++await Future.delayed(const Duration(seconds: 1));
     final db = await database;
     final res = await db
         .query(tbName); //final res = await db.rawQuery("SELECT * FROM todo");
     return res.map((json) => Todo.fromJson(json)).toList();
+  }
+
+  //**************** */
+  Future<List<QuestionModel>> getAllQuestions() async {
+    //+++++++++++await Future.delayed(const Duration(seconds: 1)); //**** */
+    final db = await database;
+    final res = await db
+        .query('faq'); //final res = await db.rawQuery("SELECT * FROM todo");
+    print('get all count: ${res.length}');
+    return res.map((json) => QuestionModel.fromJson(json)).toList();
   }
 }

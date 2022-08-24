@@ -1,4 +1,5 @@
 import 'package:api_sqflite/src/pages/home_page.dart';
+import 'package:api_sqflite/src/pages/question_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const QuestionPage(),
     );
   }
 }
